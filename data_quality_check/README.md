@@ -4,8 +4,8 @@ Data Quality Check
 This Treasure Data workflow is intended to prevent new columns being added to data tables due to changing inputs. It assums that new data is first going to a staging table before being transfered to a final data table. This workflow will mitigate the risk of exposing PII as well as give greater control to admins and project leaders who need to ensure data loads contain only specified columns.
 
 This workflow will warn you of a new column when either there is:
-...A. A new column name, or
-...B. The same column name with different data type.
+...1. A new column name, or
+...2. The same column name with different data type.
 
 ## Requirements
 
