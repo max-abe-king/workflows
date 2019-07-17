@@ -1,30 +1,43 @@
 _export:
-  #set the variables to include the database that the data quality check is for (can only be one) and a table that maps data staging tables to final data tables (columns: 'staging_table' and 'final table' respectively).
+  #Below, set the variables to include the database that the data quality check is for (can only be one) and a table that maps data staging tables to final data tables (columns: 'staging_table' and 'final table' respectively). Also include any email addresses that should recieve notification of attempted new columns; seperate each value with a comma.
   td:
-    database: maxking_onboarding
-    tablemap_table: maxking_onboarding.staging_to_final_tablemap
+    database: example_database
+    tablemap_table: example_database.staging_to_final_tablemap
+    email_warnings: example1@email.com, example2@email.com
 
+#Creates variables for each of the records included in the tablemap_table defined above. These variables are ${td.each.final_table} and ${td.each.staging_table}. The workflow will run once for each record in the tablemap_table.
 +for_each_table:
   td_for_each>: sql/each_table_name.sql
   _do:
+    #A new table will be created with a record for each new column that the staging table has that is not in the final table. If it already exists it will be replaced with the new list of columns being attempted.
     +check_for_new_columns:
       +initialize:
         td_ddl>:
         empty_tables: ["${td.database}.temp_${td.each.final_table}_column_check"]
-      +log_if_new_columns:
-        td>: sql/list_new_columns.sql
+      +log_new_columns:
+        td>: 
+        query: |
+          Select column_name, is_nullable, data_type, extra_info from information_schema.columns
+          Where table_name LIKE '${td.each.staging_table}'
+          EXCEPT Select column_name, is_nullable, data_type, extra_info from information_schema.columns where table_name like '${td.each.final_table}';
         insert_into: ${td.database}.temp_${td.each.final_table}_column_check
+      #Outputs count of new columns as variable ${td.last_results.new_column_count}
       +query_count_new_columns:
-        td>: sql/check_for_new_columns.sql
+        td>:
+        query: |
+          SELECT COUNT(*) AS new_column_count FROM ${td.database}.temp_${td.each.final_table}_column_check
         store_last_results: true
-      
+    
+    #If new columns, ends an email to whoever is listed in td.email_warnings above letting them know that an attempt was made to add new columns.
     +email_if_new_columns:
       if>: ${td.last_results.new_column_count > 0}
       _do:  
-        mail>: mail/email_issue.txt
+        mail>:
+          data: New column attempting to be added to ${td.each.final_table}. Check table ${td.database}.temp_${td.each.final_table}_column_check for details.
         subject: New Columns Attempted in ${td.each.final_table} Table.
-        to: [max.king@treasure-data.com]
+        to: ['${td.email_warnings}']
     
+    #If no new columns, appends staging data to final data table.
     +update_table_if_no_new_columns:
       +initialize:
         td_ddl>:
