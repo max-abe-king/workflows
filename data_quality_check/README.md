@@ -5,9 +5,9 @@ This Treasure Data workflow is intended to prevent new columns being added to da
 
 This workflow will warn you of a new column when either there is:  
 
-...1. A new column name, or  
+1. A new column name, or  
 
-...2. The same column name with different data type.
+2. The same column name with different data type.
 
 ## Requirements
 
