@@ -1,0 +1,38 @@
+_export:
+  #set the variables to include the database that the data quality check is for (can only be one) and a table that maps data staging tables to final data tables (columns: 'staging_table' and 'final table' respectively).
+  td:
+    database: maxking_onboarding
+    tablemap_table: maxking_onboarding.staging_to_final_tablemap
+
++for_each_table:
+  td_for_each>: sql/each_table_name.sql
+  _do:
+    +check_for_new_columns:
+      +initialize:
+        td_ddl>:
+        empty_tables: ["${td.database}.temp_${td.each.final_table}_column_check"]
+      +log_if_new_columns:
+        td>: sql/list_new_columns.sql
+        insert_into: ${td.database}.temp_${td.each.final_table}_column_check
+      +query_count_new_columns:
+        td>: sql/check_for_new_columns.sql
+        store_last_results: true
+      
+    +email_if_new_columns:
+      if>: ${td.last_results.new_column_count > 0}
+      _do:  
+        mail>: mail/email_issue.txt
+        subject: New Columns Attempted in ${td.each.final_table} Table.
+        to: [max.king@treasure-data.com]
+    
+    +update_table_if_no_new_columns:
+      +initialize:
+        td_ddl>:
+        create_tables: ["${td.database}.${td.each.final_table}"]
+      +append:
+        if>: ${td.last_results.new_column_count < 1}
+        _do:
+          td>:
+          query: |
+            SELECT * FROM ${td.database}.${td.each.staging_table}
+          insert_into: "${td.database}.${td.each.final_table}"
