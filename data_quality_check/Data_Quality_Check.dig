@@ -1,51 +1,101 @@
 _export:
-  #Below, set the variables to include the database that the data quality check is for (can only be one) and a table that maps data staging tables to final data tables (columns: 'staging_table' and 'final table' respectively). Also include any email addresses that should recieve notification of attempted new columns; seperate each value with a comma.
+  #Below, set the variables to include a tablemap_table that maps data staging databases/tables to final data databases/tables (columns: 'staging_table', 'staging_database' and 'final_table', 'final_database' respectively). Also include any email addresses that should recieve notification of attempted new columns; seperate each value with a comma.
   td:
-    database: example_database
-    tablemap_table: example_database.staging_to_final_tablemap
-    email_warnings: example1@email.com, example2@email.com
+    database: maxking_onboarding
+    tablemap_table: maxking_onboarding.staging_to_final_tablemap
+    email_warnings: max.king@treasure-data.com
 
-#Creates variables for each of the records included in the tablemap_table defined above. These variables are ${td.each.final_table} and ${td.each.staging_table}. The workflow will run once for each record in the tablemap_table.
-+for_each_table:
-  td_for_each>: sql/each_table_name.sql
+#Creates variables for each of the records included in the tablemap_table defined above. These variables are ${td.final_table}, ${td.final_database}, ${td.staging_table}, and ${td.staging_database}. The workflow will run once for each record in the tablemap_table.
++how_many_tables:
+  td>:
+  query: |
+    SELECT count(*) AS count_tables FROM ${td.tablemap_table}
+  store_last_results: true
+
++run_for_each_table:
+  loop>: ${td.last_results.count_tables}
   _do:
-    #A new table will be created with a record for each new column that the staging table has that is not in the final table. If it already exists it will be replaced with the new list of columns being attempted.
-    +check_for_new_columns:
-      +initialize:
-        td_ddl>:
-        empty_tables: ["${td.database}.temp_${td.each.final_table}_column_check"]
-      +log_new_columns:
-        td>: 
-        query: |
-          Select column_name, is_nullable, data_type, extra_info from information_schema.columns
-          Where table_name LIKE '${td.each.staging_table}'
-          EXCEPT Select column_name, is_nullable, data_type, extra_info from information_schema.columns where table_name like '${td.each.final_table}';
-        insert_into: ${td.database}.temp_${td.each.final_table}_column_check
-      #Outputs count of new columns as variable ${td.last_results.new_column_count}
-      +query_count_new_columns:
-        td>:
-        query: |
-          SELECT COUNT(*) AS new_column_count FROM ${td.database}.temp_${td.each.final_table}_column_check
-        store_last_results: true
+    +supply_staging_and_final_tables_as_variables:
+      td>:
+      query: |
+        SELECT staging_table, staging_database, final_table, final_database, row_count FROM(SELECT staging_table, staging_database, final_table, final_database, ROW_NUMBER() OVER() AS row_count FROM ${td.tablemap_table}) WHERE row_count = (${i}+1)
+      store_last_results: true
     
-    #If new columns, ends an email to whoever is listed in td.email_warnings above letting them know that an attempt was made to add new columns.
-    +email_if_new_columns:
-      if>: ${td.last_results.new_column_count > 0}
-      _do:  
-        mail>:
-          data: New column attempting to be added to ${td.each.final_table}. Check table ${td.database}.temp_${td.each.final_table}_column_check for details.
-        subject: New Columns Attempted in ${td.each.final_table} Table.
-        to: ['${td.email_warnings}']
-    
-    #If no new columns, appends staging data to final data table.
-    +update_table_if_no_new_columns:
-      +initialize:
-        td_ddl>:
-        create_tables: ["${td.database}.${td.each.final_table}"]
-      +append:
-        if>: ${td.last_results.new_column_count < 1}
-        _do:
+    +export_variables:
+      _export:
+        td:
+          staging_table: ${td.last_results.staging_table}
+          staging_database: ${td.last_results.staging_database}
+          final_table: ${td.last_results.final_table}
+          final_database: ${td.last_results.final_database}
+      
+      #A new table will be created with a record for each new column that the staging table has that is not in the final table. If it already exists it will be replaced with the new list of columns being attempted. The new table will be called 'temp_exampletable_column_count'.
+      +check_for_new_columns:
+        +initialize:
+          td_ddl>:
+          empty_tables: ["${td.final_database}.temp_${td.final_table}_column_check"]
+        +log_new_columns:
+          td>: 
+          query: |
+            SELECT column_name, is_nullable, data_type, extra_info FROM information_schema.columns
+            WHERE table_name LIKE '${td.staging_table}' AND table_schema LIKE '${td.staging_database}'
+            EXCEPT SELECT column_name, is_nullable, data_type, extra_info FROM information_schema.columns WHERE table_name LIKE '${td.final_table}' AND table_schema LIKE '${td.final_database}';
+          insert_into: ${td.final_database}.temp_${td.final_table}_column_check
+        #Outputs count of new columns as variable ${td.last_results.new_column_count}
+        +query_count_new_columns:
           td>:
           query: |
-            SELECT * FROM ${td.database}.${td.each.staging_table}
-          insert_into: "${td.database}.${td.each.final_table}"
+            SELECT COUNT(*) AS new_column_count FROM ${td.final_database}.temp_${td.final_table}_column_check
+          store_last_results: true
+        
+      #Results in 'true' if there are new columns
+      +update_tables_or_send_new_column_warning:
+        if>: ${td.last_results.new_column_count > 0}
+        #If new columns, sends an email to whoever is listed in td.email_warnings above letting them know that an attempt was made to add new columns.
+        _do:
+        
+          +resupply_staging_and_final_tables_as_variables_email:
+            td>:
+            query: |
+             SELECT staging_table, staging_database, final_table, final_database, row_count FROM(SELECT staging_table, staging_database, final_table, final_database, ROW_NUMBER() OVER() AS row_count FROM ${td.tablemap_table}) WHERE row_count = (${i}+1)
+            store_last_results: true
+      
+          +export_variables_for_email_warn:
+           _export:
+             td:
+                staging_table: ${td.last_results.staging_table}
+                staging_database: ${td.last_results.staging_database}
+                final_table: ${td.last_results.final_table}
+                final_database: ${td.last_results.final_database}
+                
+          +send_email_warning:
+            mail>:
+              data: New column attempting to be added to ${td.final_table}. Check table ${td.final_database}.temp_${td.final_table}_column_check for details.
+            subject: New Columns Attempted in ${td.final_table} Table.
+            to: ['${td.email_warnings}']
+  
+        #If no new columns, appends staging data to final data table.
+        _else_do:
+          +resupply_staging_and_final_tables_as_variables_append:
+            td>:
+            query: |
+             SELECT staging_table, staging_database, final_table, final_database, row_count FROM(SELECT staging_table, staging_database, final_table, final_database, ROW_NUMBER() OVER() AS row_count FROM ${td.tablemap_table}) WHERE row_count = (${i}+1)
+            store_last_results: true
+      
+          +export_variables_for_data_append:
+           _export:
+             td:
+                staging_table: ${td.last_results.staging_table}
+                staging_database: ${td.last_results.staging_database}
+                final_table: ${td.last_results.final_table}
+                final_database: ${td.last_results.final_database}        
+          
+          +update_table_if_no_new_columns:
+            +initialize:
+              td_ddl>:
+              create_tables: ["${td.final_database}.${td.final_table}"]
+            +append:
+              td>:
+              query: |
+                SELECT * FROM ${td.staging_database}.${td.staging_table}
+              insert_into: "${td.final_database}.${td.final_table}"
