@@ -1,9 +1,9 @@
 _export:
   #Below, set the variables to include a tablemap_table that maps data staging databases/tables to final data databases/tables (columns: 'staging_table', 'staging_database' and 'final_table', 'final_database' respectively). Also include any email addresses that should recieve notification of attempted new columns; seperate each value with a comma.
   td:
-    database: maxking_onboarding
-    tablemap_table: maxking_onboarding.staging_to_final_tablemap
-    email_warnings: max.king@treasure-data.com
+    database: your_database
+    tablemap_table: your_table_map_db.table_name
+    email_warnings: example@email.com, addmore@email.com
 
 #Creates variables for each of the records included in the tablemap_table defined above. These variables are ${td.final_table}, ${td.final_database}, ${td.staging_table}, and ${td.staging_database}. The workflow will run once for each record in the tablemap_table.
 +how_many_tables:
