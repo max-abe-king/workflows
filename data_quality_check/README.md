@@ -12,13 +12,15 @@ This workflow will warn you through email when there is:
 ## Requirements
 
 1. A Treasure Data Account that uses staging tables to update final data tables.
-...* A table in your database with the columns 'final_table', 'final_database' and 'staging_table', 'staging_database' that maps one to the other (this table name should be set as the value for the 'tablemap_table' variable in the workflow - include full database.table name).
-...|final_table    |final_database    |staging_table   |staging_database   |
-...|:-------------:|:----------------:|:--------------:|:-----------------:|
-...|example_final  |example_final_db  |example_stage    |example_stageDB   |
-...|example_final1 |example_final_db  |example_stage1   |example_otherDB   |
 
-2. The Data_Quality_Check.dig file to copy/paste into a new workflow
+2. A table in your database with the columns 'final_table', 'final_database' and 'staging_table', 'staging_database' that maps one to the other (this table name should be set as the value for the 'tablemap_table' variable in the workflow - include full database.table name).
+
+|final_table    |final_database    |staging_table   |staging_database   |
+|:-------------:|:----------------:|:--------------:|:-----------------:|
+|example_final  |example_final_db  |example_stage    |example_stageDB   |
+|example_final1 |example_final_db  |example_stage1   |example_otherDB   |
+
+3. The Data_Quality_Check.dig file to copy/paste into a new workflow
 
 
 ## Set Up
