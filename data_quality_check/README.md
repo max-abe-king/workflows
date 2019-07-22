@@ -29,7 +29,7 @@ This workflow will warn you through email when there is:
 
 2. Copy and paste the entire Data_Quality_Check.dig file into the workflow.
 
-3. Add a project file called 'sql/each_table_named.sql' __(NAME MUST BE EXACT, OR ELSE VARIABLES CHANGED IN THE WORKFLOW REFERENCE)__ and paste the following query into the file:
+3. Add a project file called 'sql/each_table_named.sql' __(NAME MUST BE EXACT, OR CHANGED IN THE WORKFLOW REFERENCE)__ and paste the following query into the file:
 
 ```
 SELECT staging_table, staging_database, final_table, final_database FROM ${td.tablemap_table}
