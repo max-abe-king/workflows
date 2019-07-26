@@ -8,10 +8,10 @@ _export:
   anomaly_threashold: 2
 # If you would like your change log to create a google sheet listing the changes add the google sheet ID and your 
 # Treasure Data connection name here. If not simply add a '#' in front of the next two lines to save for later option.
-  google_sheet_id: 1cYJyTCqA2g7TnbAkvdu3h2g10iYTvPPYNj_RrUIY_MY
-  google_sheet_connection_name: maxking_google_sheets
+  google_sheet_id: sheet ID
+  google_sheet_connection_name: connection_name
 # include each email address you would like to recieve the notification of table creates/drops, seperate with commas.
-  mailing_list: max.king@treasure-data.com
+  mailing_list: example@email.com
   # Not functional yet, but some ideas for next itteration.
   # priority_tables: would provide details in a table within email body about top x tables.
   # exclude_tables: would offer ability to exclude tables/databases.
