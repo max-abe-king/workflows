@@ -17,14 +17,14 @@ recording anomalous creates/deletes directly from your email.
 ### How it works
 The tree inputs used to determine an anomalous action are:
 1. lookback_range_days
-  * This is the lookback range that the latest create/delete must have occured within. It is recomended to set this
+    * This is the lookback range that the latest create/delete must have occured within. It is recomended to set this
 number to the frequency which this workflow is scheduled to run. (i.e. if the workflow runs weekly set the
 lookback_range_days to 7)
 2. anomaly_range_days
-  * This is the number of days that the workflow will look back for anomalies. If there are less than anomaly_threashold
+    * This is the number of days that the workflow will look back for anomalies. If there are less than anomaly_threashold
 creates/deletes within this timeframe then the actions will be flagged as anomalies.
 3. anomaly_threshold
-  * This input sets the maximum number of changes that can occur within the anomaly_range_days timeframe to be considered
+    * This input sets the maximum number of changes that can occur within the anomaly_range_days timeframe to be considered
 an anomaly. The reason for this is that there may be tables that update every day, week or month and you will want to
 filter out any regularly scheduled deletes/creates. Work with your team to understand what the minimum number of
 creates/deletes per table_name would be within your anomaly_range_days timeframe. Remember that you can always change
@@ -39,28 +39,27 @@ exclude_tables lists of databases and/or tables you would like excluded from the
 ## Setup
 
 1. Create a new workflow within the account you would like to have analyzed.
-  * Copy and paste the anomalous_table_creates_and_deletes_log.dig into the workflow.
+    * Copy and paste the anomalous_table_creates_and_deletes_log.dig into the workflow.
 2. Specify the options available:
-  * database: Set the name of an existing database where you would like your log files to be maintained. If there is not
-already a database you would like to use, please [create one]
-(https://support.treasuredata.com/hc/en-us/articles/360001266348-Database-and-Table-Management) 
+    * database: Set the name of an existing database where you would like your log files to be maintained. If there is not
+already a database you would like to use, please [create one](https://support.treasuredata.com/hc/en-us/articles/360001266348-Database-and-Table-Management) 
 and enter the name here.
-  * lookback_range_days: Should be an intiger representing a number of days, see Overview for more details.
-  * anomaly_range_days: Should be an intiger representing a number of days, see Overview for more details.
-  * anomaly_threashold: Should be an intiger representing a number of days, see Overview for more details.
-  * google_sheet_id: Create a blank Google Sheet shared to the appropriate audience to store the log of anomalous create/
+    * lookback_range_days: Should be an intiger representing a number of days, see Overview for more details.
+    * anomaly_range_days: Should be an intiger representing a number of days, see Overview for more details.
+    * anomaly_threashold: Should be an intiger representing a number of days, see Overview for more details.
+    * google_sheet_id: Create a blank Google Sheet shared to the appropriate audience to store the log of anomalous create/
 delete actions. There is an 
 [ID in the URL](https://developers.google.com/sheets/api/guides/concepts)
 , copy that ID and paste it into the google_sheet_id: in the workflow. If you do not want to use Google Sheets just enter
 '#' in front of this variable and in all lines within the '+create_google_sheet_of_anomalous_jobs' step of the workflow.
-  * google_sheet_connection_name: Enter the name of your 
+    * google_sheet_connection_name: Enter the name of your 
 [Google Sheets connection](https://support.treasuredata.com/hc/en-us/articles/360009671913-Google-Sheets-Export)
 within your Treasure Data account.
-  * mailing_list: Enter all emails you would like to recieve notifications of anomalous actions seperated by commas.
-  * exclude_databases: If you do not wish to exclude databases please enter: "''". Otherwise list the databases in this
+    * mailing_list: Enter all emails you would like to recieve notifications of anomalous actions seperated by commas.
+    * exclude_databases: If you do not wish to exclude databases please enter: "''". Otherwise list the databases in this
 format: "'database1','database2'". Each needs a single quote and seperate with commas. Put double quotes around the 
 entire entry.
-  * exclude_tables: If you do not wish to exclude tables please enter: "''". Otherwise list the tables with their full
+    * exclude_tables: If you do not wish to exclude tables please enter: "''". Otherwise list the tables with their full
 database.table_name in this format: "'database1.table1','database2.table2'". Each needs a single quote and seperate with 
 commas. Put double quotes around the entire entry.
 3. If you are opting out of using Google Sheets for an output, please make sure to place a '#' before each line in the
