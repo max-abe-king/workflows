@@ -75,7 +75,3 @@ the step '+create_google_sheet_of_anomalous_jobs'.
 4. Add a file to the workflow called 'html/email_body.html' and copy/paste the contents of the 'table_creates_and_drops_log_email.html' file into the workflow attachment. Edit if you see fit to reflect the message you want shared to users on the email_list when an anomalous table create/delete is detected.
 5. You are now ready to run the workflow and ensure setup is correct.
 6. Schedule the workflow to ensure you stay up to date with new creates/deletes accross your account.
-
-## Using the output
-
-What are these IDs?
