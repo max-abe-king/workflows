@@ -17,13 +17,16 @@ recording anomalous creates/deletes directly from your email.
 ### How it works
 The tree inputs used to determine an anomalous action are:
 1. lookback_range_days
+
 ..* This is the lookback range that the latest create/delete must have occured within. It is recomended to set this
 number to the frequency which this workflow is scheduled to run. (i.e. if the workflow runs weekly set the
 lookback_range_days to 7)
 2. anomaly_range_days
+
 ..* This is the number of days that the workflow will look back for anomalies. If there are less than anomaly_threashold
 creates/deletes within this timeframe then the actions will be flagged as anomalies.
 3. anomaly_threshold
+
 ..* This input sets the maximum number of changes that can occur within the anomaly_range_days timeframe to be considered
 an anomaly. The reason for this is that there may be tables that update every day, week or month and you will want to
 filter out any regularly scheduled deletes/creates. Work with your team to understand what the minimum number of
