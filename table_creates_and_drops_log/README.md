@@ -35,6 +35,11 @@ exclude_tables lists of databases and/or tables you would like excluded from the
 
 ### Using Google Sheets
 
+By using Google Sheets with this workflow you will be able to instantly dig into analysis of anomalous creates/deletes
+within a spreadsheet rather needing to export or query this data in an additional workflow. If you do not wish to use
+this option please make sure to place a '#' before each line in the workflow related to Google Sheets. This includes 
+variables: 'google_sheet_id' and 'google_sheet_connection_name' as well as the step '+create_google_sheet_of_anomalous_jobs'.
+
 
 ## Setup
 
@@ -69,3 +74,5 @@ the step '+create_google_sheet_of_anomalous_jobs'.
 5. Schedule the workflow to ensure you stay up to date with new creates/deletes accross your account.
 
 ## Using the output
+
+What are these IDs?
