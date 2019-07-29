@@ -17,7 +17,6 @@ recording anomalous creates/deletes directly from your email.
 ### How it works
 The tree inputs used to determine an anomalous action are:
 1. lookback_range_days
-
   * This is the lookback range that the latest create/delete must have occured within. It is recomended to set this
 number to the frequency which this workflow is scheduled to run. (i.e. if the workflow runs weekly set the
 lookback_range_days to 7)
