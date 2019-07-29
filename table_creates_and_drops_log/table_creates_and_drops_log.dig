@@ -1,6 +1,6 @@
 _export:
   td:
-# List the database where you would like your create/drop table to live.
+# List the database where you would like your anomalous create/drop log table to live.
     database: recent_change_logs
 # Set a lookback window in days. This will look at changes over this time range measured from 00:00 of run date.
   lookback_range_days: 7
