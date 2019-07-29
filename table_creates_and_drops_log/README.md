@@ -14,6 +14,8 @@ the create/delete action log. This view may have significantly fewer records and
 This table impact log will also be included in an email notification so that you can quickly review the list of tables
 recording anomalous creates/deletes directly from your email.
 
+****Your account must have Premium Audit Logs enabled to collect ID's of table creates/deletes.****
+
 ### How it works
 The tree inputs used to determine an anomalous action are:
 1. lookback_range_days
