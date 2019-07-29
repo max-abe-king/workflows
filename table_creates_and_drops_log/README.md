@@ -70,8 +70,9 @@ commas. Put double quotes around the entire entry.
 3. If you are opting out of using Google Sheets for an output, please make sure to place a '#' before each line in the
 workflow related to Google Sheets. This includes variables: 'google_sheet_id' and 'google_sheet_connection_name' as well as 
 the step '+create_google_sheet_of_anomalous_jobs'.
-4. You are now ready to run the workflow and ensure setup is correct.
-5. Schedule the workflow to ensure you stay up to date with new creates/deletes accross your account.
+4. Add a file to the workflow called 'html/email_body.html' and copy/paste the contents of the 'table_creates_and_drops_log_email.html' file into the workflow attachment. Edit if you see fit to reflect the message you want shared to users on the email_list when an anomalous table create/delete is detected.
+5. You are now ready to run the workflow and ensure setup is correct.
+6. Schedule the workflow to ensure you stay up to date with new creates/deletes accross your account.
 
 ## Using the output
 
