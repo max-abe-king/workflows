@@ -30,7 +30,7 @@ that maps one to the other (this table name should be set as the value for the '
 
 1. Create a new workflow in your [Treasure Data Console](https://console.treasuredata.com/app/workflows/ "Treasure Data").
 
-2. Copy and paste the entire Data_Quality_Check.dig file into the workflow.
+2. Copy and paste the entire table_schema_change_detection.dig file into the workflow.
 
 3. Add a project file for each query in the 'sql' folder and make sure to adjust names to reflect. Paste in the queries.
 
