@@ -32,7 +32,8 @@ that maps one to the other (this table name should be set as the value for the '
 
 2. Copy and paste the entire table_schema_change_detection.dig file into the workflow.
 
-3. Add a project file for each query in the 'sql' folder and make sure to adjust names to reflect. Paste in the queries.
+3. Add a project file for each query in the 'sql' folder and make sure to set names to reflect the query file names. 
+Paste in the queries.
 
 4. Adjust the variables in the _export step of the workflow to configure your database, tablemap_table, 
 and email_warnings reciepients._
