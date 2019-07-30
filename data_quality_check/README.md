@@ -1,4 +1,4 @@
-Data Quality Check
+Table Schema Change Detection
 ======
 
 This Treasure Data workflow is intended to prevent new columns being added to data tables due to changing inputs. It assumes that new data is first going to a staging table before being appended to a final data table. This workflow will mitigate the risk of exposing PII as well as give greater control to admins and project leaders who need to ensure data loads contain only specified columns.
