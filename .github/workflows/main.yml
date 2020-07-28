@@ -26,7 +26,7 @@ jobs:
       uses: toru-takahashi/treasure-workflow-actions@v0.0.2
       with:
         td_master_apikey: ${{ secrets.td_master_apikey }}
-        td_wf_project_name: mk_git_test_1 --project workflows/schema_change_detection -r "$(date +%Y-%m-%dT%H:%M:%S%z)"-"$(git show)"
+        td_wf_project_name: mk_git_test_1 -r "$(date +%Y-%m-%dT%H:%M:%S%z)"-"$(git show)"
         
     - name: Treasure Workflow 1
       uses: toru-takahashi/treasure-workflow-actions@v0.0.2
