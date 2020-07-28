@@ -8,8 +8,8 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - schema_change_detection
-      - table_creates_and_drops_log
+      - schema_change_detection/*
+      - table_creates_and_drops_log/*
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
