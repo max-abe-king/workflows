@@ -26,10 +26,10 @@ jobs:
       uses: toru-takahashi/treasure-workflow-actions@v0.0.2
       with:
         td_master_apikey: ${{ secrets.td_master_apikey }}
-        td_wf_project_name: mk_git_test_1 --project workflows/schema_change_detection -r "$(date +%Y-%m-%dT%H:%M:%S%z)"-"$(git show --pretty=format:'%T' | head -n 1)"
+        td_wf_project_name: mk_git_test_1 --project workflows/schema_change_detection -r "$(date +%Y-%m-%dT%H:%M:%S%z)"-"$(git show --pretty | head -n 1)"
         
     - name: Treasure Workflow 1
       uses: toru-takahashi/treasure-workflow-actions@v0.0.2
       with:
         td_master_apikey: ${{ secrets.td_master_apikey }}
-        td_wf_project_name: mk_git_test_1 --project workflows/table_creates_and_drops_log -r "$(date +%Y-%m-%dT%H:%M:%S%z)"-"$(git show --pretty=format:'%T' | head -n 1)"
+        td_wf_project_name: mk_git_test_1 --project workflows/table_creates_and_drops_log -r "$(date +%Y-%m-%dT%H:%M:%S%z)"-"$(git show --pretty | head -n 1)"
