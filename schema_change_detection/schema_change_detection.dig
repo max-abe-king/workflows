@@ -3,7 +3,6 @@ _export:
 # 1) A database name within TD. This value is overwritten for each step, but is required for all td operators. 
 # 2) A tablemap_table that maps data staging databases/tables to final data databases/tables (columns: 'staging_table',
 #    'staging_database' and 'final_table', 'final_database' respectively).
-#
 # Also include any email addresses that should recieve notification of attempted new columns; seperate each value 
 # with a comma.
   td:
