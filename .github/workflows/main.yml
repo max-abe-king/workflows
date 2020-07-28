@@ -27,7 +27,7 @@ jobs:
       with:
         td_master_apikey: ${{ secrets.td_master_apikey }}
         td_wf_project_name: mk_git_test_1
-        github_path: workflows/schema_change_detection
+        github_path: schema_change_detection/
         
 #     - name: Treasure Workflow 1
 #       uses: toru-takahashi/treasure-workflow-actions@v0.0.2
