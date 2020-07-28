@@ -23,13 +23,14 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Treasure Workflow 1
-      uses: toru-takahashi/treasure-workflow-actions@v0.0.2
+      uses: max-abe-king/td-wf-actions@v0.0.3
       with:
         td_master_apikey: ${{ secrets.td_master_apikey }}
-        td_wf_project_name: mk_git_test_1 -r "$(date +%Y-%m-%dT%H:%M:%S%z)"-"$(git show)"
+        td_wf_project_name: mk_git_test_1
+        github_path: workflows/schema_change_detection
         
-    - name: Treasure Workflow 1
-      uses: toru-takahashi/treasure-workflow-actions@v0.0.2
-      with:
-        td_master_apikey: ${{ secrets.td_master_apikey }}
-        td_wf_project_name: mk_git_test_1 --project workflows/table_creates_and_drops_log -r "$(date +%Y-%m-%dT%H:%M:%S%z)"-"$(git show --pretty | head -n 1)"
+#     - name: Treasure Workflow 1
+#       uses: toru-takahashi/treasure-workflow-actions@v0.0.2
+#       with:
+#         td_master_apikey: ${{ secrets.td_master_apikey }}
+#         td_wf_project_name: mk_git_test_1 --project workflows/table_creates_and_drops_log -r "$(date +%Y-%m-%dT%H:%M:%S%z)"-"$(git show --pretty | head -n 1)"
