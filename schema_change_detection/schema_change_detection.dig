@@ -5,7 +5,6 @@ _export:
 #    'staging_database' and 'final_table', 'final_database' respectively).
 # Also include any email addresses that should recieve notification of attempted new columns; seperate each value 
 # with a comma.
-#
   td:
     database: your_database
     tablemap_table: your_database.staging_to_final_tablemap
