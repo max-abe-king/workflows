@@ -11,7 +11,7 @@ This workflow will warn you through email when there is:
 1. A new column name, or  
 
 2. The same column name with different data type.
-
+ 
 ## Requirements
 
 1. A Treasure Data Account that uses staging tables to update final data tables.
