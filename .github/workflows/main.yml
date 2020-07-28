@@ -23,7 +23,7 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Treasure Workflow 1
-      uses: max-abe-king/td-wf-actions@v0.0.5
+      uses: max-abe-king/td-wf-actions@v0.0.7
       with:
         td_master_apikey: ${{ secrets.td_master_apikey }}
         td_wf_project_name: mk_git_test_1
